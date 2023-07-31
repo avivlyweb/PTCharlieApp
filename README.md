@@ -15,10 +15,21 @@ PTCharlieApp is a tool that leverages artificial intelligence to generate detail
 1. Clone the repository: `git clone https://github.com/avivlyweb/PTCharlieApp.git`
 2. Navigate to the project directory.
 3. Install the required dependencies (e.g., `streamlit`, `langchain`, etc.).
-4. Run the app using `streamlit run ptcharlie.py`.
+4. Set up environment variables:
+Create a .env file in the project root and set your API keys. 
+OPENAI_API_KEY=your_openai_key
+ELEVEN_API_KEY=your_eleven_key
+Remember not to commit the .env file to your public repository.
+5.Install the required dependencies:
+Use the provided requirements.txt file 
+pip install -r requirements.txt
+
+6. Run the app using `streamlit run ptcharlie.py`.
+
 
 ## Note
 Remember to set up any required API keys or environment variables before running the app.
+Bear in mind that it takes time for the case to be generated 
 
 ## Contributing
 Feel free to fork the repository, make changes, and submit pull requests. Any contributions are warmly welcomed!
