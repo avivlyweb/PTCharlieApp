@@ -1,22 +1,25 @@
 import os
 import time
 import streamlit as st
+from dotenv import load_dotenv
 from langchain import PromptTemplate
-from langchain.chains import LLMChain 
+from langchain.chains import LLMChain
 from langchain.llms import OpenAI
-import databutton as db
 from elevenlabs import generate, set_api_key
+
+# Load environment variables
+load_dotenv()
+
+# OpenAI credentials
+openai_api_key = os.getenv("OPENAI_API_KEY")
+os.environ["OPENAI_API_KEY"] = openai_api_key
+
+# Eleven Labs credentials
+set_api_key(os.getenv("ELEVEN_API_KEY"))
 
 # Audio cache and character limit
 audio_cache = {}
 MAX_CHARS = 5000
-
-# OpenAI credentials
-openai_api_key = db.secrets.get("OPENAI_API_KEY")
-os.environ["OPENAI_API_KEY"] = openai_api_key
-
-# Eleven Labs credentials
-set_api_key(db.secrets.get("ELEVEN_API_KEY"))
 
 llm = OpenAI(temperature=0.5)
 
@@ -36,7 +39,7 @@ def generate_audio(text, voice):
 def generate_story(input_data):
     sections = [
         "A brief patient history and background, Personal information, gender, random name",
-        "write the Initial assessment, the examination findings(arom,prom), and diagnosis, in addtion differential diagnosis based on the case, special tests outcome ",
+        "write the Initial assessment, the examination findings(arom,prom), and diagnosis, in addition differential diagnosis based on the case, special tests outcome",
         "Evidence-based treatment, 3 SMART goals linked to assessment findings",
         "Propose an intervention plan based on the given information, Detailed intervention plan with justification",
         "Expected outcomes and progress monitoring",
@@ -45,11 +48,10 @@ def generate_story(input_data):
     
     story_text = ""
     for section in sections:
-        # Constructing a detailed prompt for each section
         prompt_section = f"Given a {{age}}-year-old patient with a background of {{patient_background}} seeking care in the domain of {{domain_selected}}, provide content for the section: {section}. Also, consider the keywords: {{text}}."
 
         story_chain = LLMChain(
-            llm=llm, 
+            llm=llm,
             prompt=PromptTemplate(
                 input_variables=list(input_data.keys()),
                 template=prompt_section
@@ -75,31 +77,25 @@ Customize cases to your needs for assignments, training, or professional develop
     age = st.slider("Patient Age:", 0, 100, 30)
 
     with st.form(key='my_form'):
+        patient_background = st.text_area("Enter some info for your case study:", placeholder="e.g., 'Jill, female, parkinson or total hip a year ago'")
         
-        # Multi-input for patient background
-        patient_background = st.text_area("Enter some info  for your case study:",  placeholder="e.g.,' Jill, female, parkinson or total hip a year ago  ")
-
-        # Dropdown for physiotherapy domains
         physio_domains = [
-            "Select a physiotherapy domain", 
-            "Sports Physiotherapy", 
-            "Geriatric Physiotherapy", 
-            "Orthopedic Physiotherapy", 
-            "Pediatric Physiotherapy", 
-            "Neurological Physiotherapy", 
+            "Select a physiotherapy domain",
+            "Sports Physiotherapy",
+            "Geriatric Physiotherapy",
+            "Orthopedic Physiotherapy",
+            "Pediatric Physiotherapy",
+            "Neurological Physiotherapy",
             "Cardiovascular Physiotherapy"
         ]
         domain_selected = st.selectbox("Physiotherapy Specialization:", physio_domains)
 
-        # Keywords
         text = st.text_input("ADL Problem", placeholder="e.g., 'Difficulty with walking, transferring, balance, getting dressed, showering, toileting, and grooming'")
-
-        # Voice options
+        
         options = ["Bella", "Antoni", "Arnold", "AI", "Domi", "Elli", "Josh", "Rachel", "Sam"]
         voice = st.selectbox("Voice for Audio Playback:", options)
 
         if st.form_submit_button("Generate Story"):
-            # Construct the input_data dictionary
             input_data = {
                 "patient_background": patient_background,
                 "domain_selected": domain_selected,
