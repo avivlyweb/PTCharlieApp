@@ -1,4 +1,4 @@
-# PTCharlieApp
+# PTCharlie - Your AI-Powered Assistant for Physiotherapy Case Studies
 Physiotherapy Case Study Generator
 
 ## Overview
