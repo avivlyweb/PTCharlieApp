@@ -20,7 +20,7 @@ Create a .env file in the project root and set your API keys.
 OPENAI_API_KEY=your_openai_key
 ELEVEN_API_KEY=your_eleven_key
 Remember not to commit the .env file to your public repository.
-5.Install the required dependencies:
+5. Install the required dependencies:
 Use the provided requirements.txt file 
 pip install -r requirements.txt
 
@@ -35,5 +35,5 @@ Bear in mind that it takes time for the case to be generated
 Feel free to fork the repository, make changes, and submit pull requests. Any contributions are warmly welcomed!
 
 ## License
-[License Name] (If you've added a license, link it here.)
+
 
