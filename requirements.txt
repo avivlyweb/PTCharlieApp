@@ -3,3 +3,6 @@ langchain
 elevenlabs
 python-dotenv
 openai
+watchdog
+ipykernel
+databutton
